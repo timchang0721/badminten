@@ -9,9 +9,32 @@ from selenium.webdriver.support.ui import WebDriverWait
 from datetime import datetime, timedelta
 
 
-URL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/11&D2=1"
+URL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/14&D2=3"
+#testURL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/09&D2=3"
 target = []
 target= [7,11,8,12,6,10,9,13]
+
+def refresh_page():
+    target_xpath = "/html/body/table[1]/tbody/tr[3]/td/div/form/table/tbody/tr/td/span/div/table/tbody/tr[2]/td/span/div[3]"  # 替换为目标元素的XPath
+
+# 设置最大刷新次数和每次刷新之间的等待时间
+    max_refreshes = 100  # 最大刷新次数
+    wait_time = 0.1  # 每次刷新之间的等待时间（秒）
+
+    # 刷新网页直到目标元素出现或达到最大刷新次数
+    for i in range(max_refreshes):
+        try:
+            # 尝试查找目标元素
+            target_element = driver.find_element(By.XPATH, target_xpath)
+            print("目标元素已找到！")
+            break  # 找到目标元素，退出循环
+        except :
+            # 未找到目标元素，刷新网页
+            print(f"目标元素未找到，正在刷新网页...（第 {i+1} 次刷新）")
+            driver.get(URL2)
+            time.sleep(wait_time)  # 等待几秒钟再刷新
+
+
 def Conncet_Web_Browers(): #瀏覽器條件設定 
 
    
@@ -47,18 +70,18 @@ def Conncet_Web_Browers(): #瀏覽器條件設定
    
         # 創建一個 Chrome WebDriver 實例
         driver = webdriver.Chrome(options=options)
-        driver.implicitly_wait(10)  # 设置隐式等待时间
+        #driver.implicitly_wait(10)  # 设置隐式等待时间
         driver.get("https://scr.cyc.org.tw/tp20.aspx?Module=net_booking&files=booking_before&PT=1")
         return driver
 
 
 def wait_until_noon():  #等待到午夜12點
     now = datetime.now()
-    target_time = now.replace(hour=15, minute=22, second=0, microsecond=0)
-    #if now.minute >= 0:
-        #target_time += timedelta(days=1)
+    target_time = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    if now.minute >= 0:
+        target_time += timedelta(days=1)
     wait_time = (target_time - now).total_seconds()
-    time.sleep(wait_time)
+    time.sleep(wait_time-5)
 
 
 
@@ -105,6 +128,7 @@ if __name__ == "__main__":
     driver = Conncet_Web_Browers()
     wait_until_noon()
     connect_to_website_in_new_tab(driver)
+    refresh_page()
     for i in target:
         select_time(driver,i)
         handle_alert(driver)

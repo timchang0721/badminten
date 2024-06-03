@@ -9,9 +9,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from datetime import datetime, timedelta
 
 
-URL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/11&D2=1"
+URL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/17&D2=3"
 target = []
-target= [6,10,9,13,7,11,8,12]
+target= [6,9,7,8,10,13,11,12,14,17,15,16]
 def Conncet_Web_Browers(): #瀏覽器條件設定 
 
    
@@ -54,7 +54,7 @@ def Conncet_Web_Browers(): #瀏覽器條件設定
 
 def wait_until_noon():  #等待到午夜12點
     now = datetime.now()
-    target_time = now.replace(hour=15, minute=13, second=1, microsecond=0)
+    target_time = now.replace(hour=16, minute=34, second=0, microsecond=300)
     #if now.minute >= 0:
         #target_time += timedelta(days=1)
     wait_time = (target_time - now).total_seconds()

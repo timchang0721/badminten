@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from datetime import datetime, timedelta
 
 
-URL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/18&D2=3"
+URL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/17&D2=3"
 #testURL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/09&D2=3"
 target = []
 target= [6,9,7,8,10,13,11,12,14,17,15,16]
@@ -77,7 +77,7 @@ def Conncet_Web_Browers(): #瀏覽器條件設定
 
 def wait_until_noon():  #等待到午夜12點
     now = datetime.now()
-    target_time = now.replace(hour=0, minute=0, second=0, microsecond=300)
+    target_time = now.replace(hour=16, minute=39, second=0, microsecond=300)
     if now.minute >= 0:
         target_time += timedelta(days=1)
     wait_time = (target_time - now).total_seconds()
@@ -113,11 +113,11 @@ def select_time(driver,target):
 
 
 
-def handle_alert(driver):
+def handle_alert(driver,i):
     # 處理弹出窗口
     try:
         alert = driver.switch_to.alert
-        print(f"弹出窗口内容: {alert.text}")
+        print(f"第{i}次"+f"弹出窗口内容: {alert.text}")
         temp = alert.text
         alert.accept()
         print("弹出窗口已关闭")
@@ -126,11 +126,12 @@ def handle_alert(driver):
 
 if __name__ == "__main__":        
     driver = Conncet_Web_Browers()
+    
+    #connect_to_website_in_new_tab(driver)
     wait_until_noon()
-    connect_to_website_in_new_tab(driver)
     #refresh_page()
     for i in target:
         select_time(driver,i)
-        handle_alert(driver)
+        handle_alert(driver,i)
 
     time.sleep(100)

@@ -76,7 +76,7 @@ def Conncet_Web_Browers(): #瀏覽器條件設定
 
 def wait_until_noon():  #等待到午夜12點
     now = datetime.now()
-    target_time = now.replace(hour=0, minute=0, second=0, microsecond=300)
+    target_time = now.replace(hour=0, minute=0, second=0, microsecond=100)
     if now.minute >= 0:
         target_time += timedelta(days=1)
     wait_time = (target_time - now).total_seconds()
@@ -127,7 +127,7 @@ def handle_alert(driver):
 if __name__ == "__main__":        
     driver = Conncet_Web_Browers()
     
-    connect_to_website_in_new_tab(driver)
+    #connect_to_website_in_new_tab(driver)
     wait_until_noon()
     #refresh_page()
     for i in target:

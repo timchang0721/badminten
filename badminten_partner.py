@@ -12,8 +12,7 @@ from datetime import datetime, timedelta
 URL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/14&D2=3"
 #testURL2 ="https://scr.cyc.org.tw/tp20.aspx?module=net_booking&files=booking_place&StepFlag=2&PT=1&D=2024/06/09&D2=3"
 target = []
-target= [6,10,9,13,7,11,8,12]
-
+target= [9,6,8,7,13,10,12,11,17,14,16,15]
 def refresh_page():
     target_xpath = "/html/body/table[1]/tbody/tr[3]/td/div/form/table/tbody/tr/td/span/div/table/tbody/tr[2]/td/span/div[3]"  # 替换为目标元素的XPath
 
@@ -77,11 +76,12 @@ def Conncet_Web_Browers(): #瀏覽器條件設定
 
 def wait_until_noon():  #等待到午夜12點
     now = datetime.now()
-    target_time = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    target_time = now.replace(hour=0, minute=0, second=0, microsecond=300)
     if now.minute >= 0:
         target_time += timedelta(days=1)
     wait_time = (target_time - now).total_seconds()
-    time.sleep(wait_time-5)
+    print ("要等待多少"+str(wait_time)+"秒")
+    time.sleep(wait_time)
 
 
 
@@ -126,9 +126,10 @@ def handle_alert(driver):
 
 if __name__ == "__main__":        
     driver = Conncet_Web_Browers()
-    wait_until_noon()
+    
     connect_to_website_in_new_tab(driver)
-    refresh_page()
+    wait_until_noon()
+    #refresh_page()
     for i in target:
         select_time(driver,i)
         handle_alert(driver)
